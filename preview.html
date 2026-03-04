@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PREVIEW — Portfolio Section Redesign</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --lime: #D9FEA9;
+      --blue: #519BF7;
+      --dark: #111111;
+      --gray: #6b7280;
+      --gray-light: #f4f5f7;
+      --border: #e5e7eb;
+      --white: #ffffff;
+      --font: 'Inter', system-ui, sans-serif;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    body { font-family: var(--font); background: #fafafa; color: var(--dark); }
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+    /* --- Notice banner --- */
+    .preview-notice {
+      background: #519BF7;
+      color: white;
+      text-align: center;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    /* --- Section wrapper --- */
+    .portfolio-section { padding: 64px 0; }
+    .portfolio-section.alt { background: var(--gray-light); }
+
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(81,155,247,0.1);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 10px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* --- Filters --- */
+    .portfolio-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: transparent;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray);
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+
+    /* ===================================================
+       NEW PORTFOLIO ITEM LAYOUT
+       Each item: full-width "slide-like" card
+       =================================================== */
+
+    .portfolio-items {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .p-item {
+      background: var(--white);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Item header — category + title + description */
+    .p-item-header {
+      padding: 28px 36px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .p-item-header-left {}
+    .p-item-cat {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .cat-email { background: rgba(245,158,11,0.15); color: #92400e; }
+    .cat-messaging { background: rgba(139,92,246,0.15); color: #5b21b6; }
+    .cat-social { background: rgba(236,72,153,0.15); color: #9d174d; }
+    .cat-strategy { background: rgba(16,185,129,0.15); color: #065f46; }
+    .cat-campaign { background: rgba(81,155,247,0.15); color: #1a4fa0; }
+    .cat-research { background: rgba(245,158,11,0.15); color: #92400e; }
+    .cat-promos { background: rgba(16,185,129,0.15); color: #065f46; }
+    .cat-reporting { background: rgba(107,114,128,0.15); color: #374151; }
+    .cat-testing { background: rgba(239,68,68,0.15); color: #991b1b; }
+
+    .p-item-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .p-item-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      max-width: 640px;
+    }
+    .p-item-meta {
+      display: flex;
+      gap: 16px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--gray);
+      padding-top: 4px;
+    }
+    .p-item-meta strong { color: var(--dark); }
+
+    /* Item media area */
+    .p-item-media {
+      padding: 28px 36px 36px;
+      background: #f9f9f9;
+    }
+
+    /* --- Browser chrome --- */
+    .browser-wrap {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border: 1px solid #ddd;
+    }
+    .b-chrome {
+      background: #ececec;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .b-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .b-dot.r { background: #ff5f57; }
+    .b-dot.y { background: #ffbd2e; }
+    .b-dot.g { background: #28c840; }
+    .b-bar { flex: 1; height: 20px; background: #f5f5f5; border-radius: 4px; margin: 0 8px; border: 1px solid #ddd; }
+    .b-content img { width: 100%; display: block; }
+
+    /* --- LAYOUT TYPE 1: Single GIF (portrait — email) ---
+       Shows at natural aspect ratio, centered, with white bg */
+    .gif-portrait-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .gif-portrait-main {
+      /* Portrait GIF: fixed width, natural height */
+      width: 340px;
+      flex-shrink: 0;
+    }
+    .gif-portrait-main .b-content img {
+      /* Let it display at full natural height — no cropping */
+      width: 100%;
+      height: auto;
+    }
+    .gif-portrait-supporting {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .gif-portrait-supporting img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #eee;
+    }
+
+    /* --- LAYOUT TYPE 2: Multiple landscape GIFs side by side ---
+       Each GIF takes a proper slice of the row, no cropping */
+    .gif-landscape-row {
+      display: grid;
+      gap: 16px;
+    }
+    .gif-landscape-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .gif-landscape-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .gif-landscape-row.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    .gif-landscape-row .browser-wrap .b-content img {
+      width: 100%;
+      height: auto; /* natural proportions, no cropping */
+    }
+
+    /* --- LAYOUT TYPE 3: Image grid (social/ads statics) ---
+       Grid of images, all visible, no scroll */
+    .img-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .img-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .img-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .img-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+    .img-grid img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .img-grid img:hover { transform: scale(1.02); }
+
+    /* For ad creatives that may not be square: */
+    .img-grid.natural img {
+      aspect-ratio: unset;
+      height: auto;
+    }
+
+    /* --- LAYOUT TYPE 4: A/B side by side ---
+       Clear control vs test comparison */
+    .ab-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .ab-col {}
+    .ab-label-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .ab-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 6px;
+    }
+    .ab-badge.ctrl { background: #e5e7eb; color: #374151; }
+    .ab-badge.test { background: rgba(81,155,247,0.2); color: #1e4fa0; }
+    .ab-col .browser-wrap .b-content img {
+      width: 100%;
+      height: auto;
+    }
+
+    /* --- LAYOUT TYPE 5: Portrait + landscape mixed (ISBW mobile+desktop) */
+    .gif-mixed-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr; /* landscape left, portrait right */
+      gap: 16px;
+      align-items: start;
+    }
+    .gif-mixed-row .b-content img { width: 100%; height: auto; }
+
+    /* --- divider between example sections --- */
+    .example-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<div class="preview-notice">
+  PREVIEW — Proposed portfolio layout redesign · Not yet applied to main site
+</div>
+
+<!-- ====================================================
+     SOMNEE SECTION PREVIEW
+     ==================================================== -->
+<section class="portfolio-section">
+  <div class="container">
+    <p class="section-label">Somnee</p>
+    <h2 class="section-title">Somnee portfolio</h2>
+    <p class="section-sub">Campaigns, creative assets, email, strategy decks, and briefs that I personally owned and led at Somnee.</p>
+
+    <div class="portfolio-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Email</button>
+      <button class="filter-btn">Messaging</button>
+      <button class="filter-btn">Social &amp; Ads</button>
+      <button class="filter-btn">Strategy</button>
+      <button class="filter-btn">Personal Writing</button>
+    </div>
+
+    <div class="portfolio-items">
+
+      <!-- ── EXAMPLE 1: Email (portrait GIF) ── -->
+      <div>
+        <p class="example-label">Example 1 — Email card (portrait GIF, image33.gif = 514×720)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-email">Email</span>
+              <h3 class="p-item-title">Welcome Email — Post-Purchase Onboarding</h3>
+              <p class="p-item-desc">First email in Somnee's post-purchase onboarding sequence. Designed to orient new customers, set expectations for the 30-day trial, and encourage first-time device setup.</p>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <!-- Portrait GIF shown at natural proportions, supported by screenshots on the right -->
+            <div class="gif-portrait-layout">
+              <div class="gif-portrait-main">
+                <div class="browser-wrap">
+                  <div class="b-chrome">
+                    <span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span>
+                    <div class="b-bar"></div>
+                  </div>
+                  <div class="b-content">
+                    <img src="assets/media/image33.gif" alt="Welcome email animated scroll" />
+                  </div>
+                </div>
+              </div>
+              <div class="gif-portrait-supporting">
+                <img src="assets/media/image51.png" alt="Email screenshot" />
+                <img src="assets/media/image62.png" alt="Email screenshot" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 2: Messaging (landscape GIF) ── -->
+      <div>
+        <p class="example-label">Example 2 — Messaging card (landscape GIF, image37.gif = 1278×720)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-messaging">Messaging &amp; Positioning</span>
+              <h3 class="p-item-title">Affiliate Partner Guide</h3>
+              <p class="p-item-desc">Messaging and positioning document created for Somnee's affiliate partners, equipping them with brand voice, key claims, and approved talking points.</p>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="browser-wrap">
+              <div class="b-chrome">
+                <span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span>
+                <div class="b-bar"></div>
+              </div>
+              <div class="b-content">
+                <img src="assets/media/image37.gif" alt="Affiliate guide animated scroll" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 3: Social & Ads (image grid) ── -->
+      <div>
+        <p class="example-label">Example 3 — Social &amp; Ads (image grid instead of horizontal scroll)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-social">Social &amp; Ads</span>
+              <h3 class="p-item-title">"Us vs. Them" Campaign — vs. Sleeping Pills</h3>
+              <p class="p-item-desc">Insight: Somnee doesn't just compete with other neuro-wearables, but all sleep aids including sleeping pills. Two creative sets (statics) for organic + paid.</p>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="img-grid cols-5">
+              <img src="assets/media/image32.png" alt="Us vs Them" />
+              <img src="assets/media/image36.png" alt="Us vs Them" />
+              <img src="assets/media/image35.png" alt="Us vs Them" />
+              <img src="assets/media/image39.png" alt="Us vs Them" />
+              <img src="assets/media/image38.png" alt="Us vs Them" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 4: Larger Social Ads grid (Science campaign = many images) ── -->
+      <div>
+        <p class="example-label">Example 4 — Large Social &amp; Ads grid (Science campaign, 21 images)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-social">Social &amp; Ads</span>
+              <h3 class="p-item-title">Science / How It Works Campaign</h3>
+              <p class="p-item-desc">4 animated carousel creative sets targeting 'sleep optimizers' — high-performing CEOs, executives, and athletes. Breaks down the neuroscience behind Somnee in a visually compelling, credibility-building format.</p>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="img-grid cols-5">
+              <img src="assets/media/image74.png" alt="Science campaign" />
+              <img src="assets/media/image73.png" alt="Science campaign" />
+              <img src="assets/media/image75.png" alt="Science campaign" />
+              <img src="assets/media/image71.png" alt="Science campaign" />
+              <img src="assets/media/image78.png" alt="Science campaign" />
+              <img src="assets/media/image76.png" alt="Science campaign" />
+              <img src="assets/media/image79.png" alt="Science campaign" />
+              <img src="assets/media/image72.png" alt="Science campaign" />
+              <img src="assets/media/image99.png" alt="Science campaign" />
+              <img src="assets/media/image82.png" alt="Science campaign" />
+              <img src="assets/media/image84.png" alt="Science campaign" />
+              <img src="assets/media/image88.png" alt="Science campaign" />
+              <img src="assets/media/image90.png" alt="Science campaign" />
+              <img src="assets/media/image89.png" alt="Science campaign" />
+              <img src="assets/media/image86.png" alt="Science campaign" />
+              <img src="assets/media/image83.png" alt="Science campaign" />
+              <img src="assets/media/image92.png" alt="Science campaign" />
+              <img src="assets/media/image91.png" alt="Science campaign" />
+              <img src="assets/media/image93.png" alt="Science campaign" />
+              <img src="assets/media/image95.png" alt="Science campaign" />
+              <img src="assets/media/image96.png" alt="Science campaign" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-items -->
+  </div>
+</section>
+
+<!-- ====================================================
+     GOOGLE SECTION PREVIEW
+     ==================================================== -->
+<section class="portfolio-section alt">
+  <div class="container">
+    <p class="section-label">Google</p>
+    <h2 class="section-title">Google portfolio</h2>
+    <p class="section-sub">Campaigns, creative assets, A/B tests, strategy decks, and briefs that I personally owned and led at Google.</p>
+
+    <div class="portfolio-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Campaign</button>
+      <button class="filter-btn">Strategy</button>
+      <button class="filter-btn">Research</button>
+      <button class="filter-btn">Targeted Promos</button>
+      <button class="filter-btn">Reporting</button>
+      <button class="filter-btn">Web Testing</button>
+    </div>
+
+    <div class="portfolio-items">
+
+      <!-- ── EXAMPLE 5: FEMA 3 GIFs (landscape) ── -->
+      <div>
+        <p class="example-label">Example 5 — Campaign card (3 landscape GIFs, each 1000×544)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-campaign">Campaign</span>
+              <h3 class="p-item-title">FEMA Partnership &amp; Disaster Response — Briefs &amp; Decks</h3>
+              <p class="p-item-desc">Overview deck, Response Guide brief, and Preparedness Guide brief for Google's FEMA small business disaster response partnership.</p>
+            </div>
+            <div class="p-item-meta">
+              <span><strong>Agency:</strong> R/GA</span>
+              <span><strong>Role:</strong> Product/Content Marketing</span>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="gif-landscape-row cols-3">
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image102.gif" alt="FEMA overview deck" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image103.gif" alt="FEMA Response Guide brief" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image100.gif" alt="FEMA Preparedness Guide brief" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 6: Research (4 GIFs in a 2x2 grid) ── -->
+      <div>
+        <p class="example-label">Example 6 — Research card (4 landscape GIFs in 2×2 grid)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-research">Research</span>
+              <h3 class="p-item-title">Google for Small Business — Brand Research Study</h3>
+              <p class="p-item-desc">Executive deck, data deck, survey questionnaire, and insights doc from a large-scale brand awareness study among small businesses in America.</p>
+            </div>
+            <div class="p-item-meta">
+              <span><strong>Agency:</strong> MetrixLab</span>
+              <span><strong>Role:</strong> Product/Content Marketing</span>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="gif-landscape-row cols-4">
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image113.gif" alt="Executive deck" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image115.gif" alt="Data deck" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image116.gif" alt="Insights doc" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image117.gif" alt="Supplemental doc" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 7: ISBW Design — mixed landscape + portrait ── -->
+      <div>
+        <p class="example-label">Example 7 — Mixed GIFs card (desktop landscape 1000×601 + mobile portrait 463×1000)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-campaign">Campaign</span>
+              <h3 class="p-item-title">International Small Business Week — Design Assets</h3>
+              <p class="p-item-desc">Desktop and Mobile Figma designs for the ISBW landing experience.</p>
+            </div>
+            <div class="p-item-meta">
+              <span><strong>Agency:</strong> Rehab</span>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <!-- Desktop is landscape, mobile is tall portrait — use custom ratio grid -->
+            <div class="gif-mixed-row">
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image129.gif" alt="ISBW Desktop Figma" /></div>
+              </div>
+              <div class="browser-wrap">
+                <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                <div class="b-content"><img src="assets/media/image128.gif" alt="ISBW Mobile Figma" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXAMPLE 8: A/B Test (side-by-side comparison) ── -->
+      <div>
+        <p class="example-label">Example 8 — Web Testing card (A/B side-by-side GIFs)</p>
+        <div class="p-item">
+          <div class="p-item-header">
+            <div class="p-item-header-left">
+              <span class="p-item-cat cat-testing">Web Testing</span>
+              <h3 class="p-item-title">Business Profile Site Migration A/B Test</h3>
+              <p class="p-item-desc">Control (Kintaro/static server) vs. Test (Brightspot/dynamic server). Key front-end changes: new design system, redesigned hero, updated CTA styling. Live in 4 markets.</p>
+            </div>
+            <div class="p-item-meta">
+              <span><strong>Agency:</strong> Cybage</span>
+              <span><strong>Role:</strong> Growth Marketing</span>
+            </div>
+          </div>
+          <div class="p-item-media">
+            <div class="ab-compare">
+              <div class="ab-col">
+                <div class="ab-label-row"><span class="ab-badge ctrl">Control — Old Site</span></div>
+                <div class="browser-wrap">
+                  <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                  <div class="b-content"><img src="assets/media/image124.gif" alt="Control site" /></div>
+                </div>
+              </div>
+              <div class="ab-col">
+                <div class="ab-label-row"><span class="ab-badge test">Test — New Site</span></div>
+                <div class="browser-wrap">
+                  <div class="b-chrome"><span class="b-dot r"></span><span class="b-dot y"></span><span class="b-dot g"></span><div class="b-bar"></div></div>
+                  <div class="b-content"><img src="assets/media/image127.gif" alt="Test site" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-items -->
+  </div>
+</section>
+
+</body>
+</html>
