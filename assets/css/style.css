@@ -1622,6 +1622,40 @@ nav {
   height: 290px;
 }
 
+.ab-annotated-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 16px;
+}
+.ab-annotated-img {
+  flex: 0 1 auto;
+  text-align: center;
+}
+.ab-annotated-img img {
+  height: 480px;
+  width: auto;
+  border-radius: 8px;
+  display: block;
+}
+.ab-tag {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--lime);
+  color: var(--blue);
+  font-family: var(--font);
+  font-size: 9px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  line-height: 1.3;
+  z-index: 2;
+}
+
 .line-by-line-group {
   margin-left: 228px;
 }
