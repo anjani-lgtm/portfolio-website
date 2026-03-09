@@ -89,6 +89,43 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
 });
 
+// --- Project Modal ---
+function openProjectModal(index) {
+  const detail = document.querySelector(`.project-detail[data-index="${index}"]`);
+  const header = document.getElementById('projectModalHeader');
+  const body = document.getElementById('projectModalBody');
+  const overlay = document.getElementById('projectModalOverlay');
+  if (!detail || !header || !body || !overlay) return;
+  const logo = detail.querySelector('.project-logo-mark');
+  const h3 = detail.querySelector('h3');
+  header.innerHTML = (logo ? logo.outerHTML : '') + (h3 ? h3.outerHTML : '');
+  const rows = detail.querySelectorAll('.pf-row');
+  body.innerHTML = '';
+  rows.forEach(row => body.appendChild(row.cloneNode(true)));
+  body.scrollTop = 0;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal(event, force) {
+  const overlay = document.getElementById('projectModalOverlay');
+  if (!overlay) return;
+  if (force || event.target === overlay) {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('projectModalOverlay');
+    if (overlay && overlay.classList.contains('open')) {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+});
+
 // --- Active nav highlight on scroll ---
 const sections = document.querySelectorAll('section[id], footer[id]');
 const navItems = document.querySelectorAll('.nav-links a[href^="#"]');

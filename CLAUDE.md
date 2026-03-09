@@ -110,13 +110,27 @@ Key CSS classes and where they're used:
 
 ### CSS variables
 ```css
---lime: #D9FEA9
+--lime: #D9FEA9       /* Verified from PDF pixel data */
 --blue: #519BF7       /* Use this for all blue accents — NOT #2563eb or other blues */
+--blue-dark: #1a73e8  /* Google link blue — use for hyperlinks and secondary blue */
 --dark: #111111
---gray: #6b7280
---gray-light: #f4f5f7
+--gray: #5f6368       /* Google's exact body text gray — verified from PDF */
+--gray-mid: #999999   /* Subtitle / label gray — verified from PDF */
+--gray-light: #f8f9fa /* Google's exact light background — verified from PDF */
+--white: #ffffff
 --border: #e5e7eb
 ```
+
+### Font
+`Helvetica Neue` — system font, no Google Fonts import needed.
+Anjani tested Plus Jakarta Sans and Inter, and chose Helvetica Neue as the final preference.
+Font stack: `'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif`
+Do NOT add Google Fonts imports or switch fonts without asking.
+
+### Colors on lime (#D9FEA9) backgrounds
+Use `var(--dark)` (#111111) for text on lime sections (hero, contact/footer).
+Do NOT use green variants like `#4a7a2a` or `#2a4a15` — they were derived from the PPTX conversion and do not match the PDF.
+Hero accent (`em` tag in hero name) uses `var(--blue)` per PDF.
 
 ---
 
